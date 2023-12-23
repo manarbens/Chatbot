@@ -63,8 +63,6 @@ def analyse_endpoint(analyse_input: AnalyseTexteInput):
     print(tokens)
 
 
-    
-
     #Stemmer & Lemmatization
     
     #porter = PorterStemmer()
