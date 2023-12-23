@@ -71,6 +71,8 @@ def analyse_endpoint(analyse_input: AnalyseTexteInput):
     #stemmed_words = [porter.stem(word) for word in tokens]
     lemmatized_words = [lemmatizer.lemmatize(word) for word in tokens]
     print(lemmatized_words)
+    query= " ".join(lemmatized_words) +  "In context of Computer Science"
+    print(query)
 
     return {"msg": analyse_input}
 if __name__ == "__main__":
