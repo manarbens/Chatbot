@@ -1,4 +1,3 @@
-Présentation du Projet
 Ce dépôt contient deux branches : main et master.
 
 * Branche "main"
