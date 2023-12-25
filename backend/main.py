@@ -1,27 +1,21 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 import uvicorn
-from textblob import TextBlob
-
-import nltk
-nltk.download('punkt')
-nltk.download('stopwords')
-from nltk.corpus import stopwords
-from nltk.stem import PorterStemmer, WordNetLemmatizer
 import string
-
-import openai
+import nltk
 from nltk.corpus import stopwords
-from nltk.stem import PorterStemmer, WordNetLemmatizer
+from nltk.stem import WordNetLemmatizer
+import openai
+import creds
+import os
 
-nltk.download('wordnet')
-
+os.environ["OPENAI_KEY"] = creds.API_KEY
+openai.api_key = os.environ["OPENAI_KEY"]
 
 app = FastAPI()
 
-
-
+# CORS middleware configuration
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -30,71 +24,49 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-def analyze_texte(texte :str):
-    mot_cle=nltk.word_tokenize(texte)
-    return {"sujet":"vide","sentiments":[],"mot_cles":mot_cle}
+def analyze_texte(texte: str):
+    mot_cle = nltk.word_tokenize(texte)
+    return {"sujet": "vide", "sentiments": [], "mot_cles": mot_cle}
 
 def generer_reponse(texte: str):
-    return {"reponse":"reponse vide"}
+    return {"reponse": "reponse vide"}
 
 def formater_reponse(texte: str):
-    return {"reponse_formater":"reponse vide formater"}
-
-
+    return {"reponse_formater": "reponse vide formater"}
 
 class AnalyseTexteInput(BaseModel):
     texte: str
 
-@app.post("/query_openai")
-def QueryOpenAI(query:str):
-    openai.api_key="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"
-    client = openai.ChatCompletion.create(
-        
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role":"system","content":"You are a computer science university teacher"},
-            {"role":"assistant","content":"You are specialized in AI , machine leaning and deep learning"},
-            {"role": "user", "content": query}
-            
-        ]
-    )
-    response = client['choices'][0]['message']['content']
-    print(response)
-    return response
-
 @app.post("/analyse")
 def analyse_endpoint(analyse_input: AnalyseTexteInput):
     print(analyse_input)
-    #miniscule
-    texte=(analyse_input.texte).lower()
-    #ponctuation
+    # minuscule
+    texte = (analyse_input.texte).lower()
+    # ponctuation
     texte = ' '.join([char for char in texte if char not in string.punctuation])
-    #texte.translate(str.maketrans("", "", string.punctuation))
-    #erreur:Faute d'orthographe
-    """blob = TextBlob(texte)
-    texte = blob.correct()
-    print(texte.words)
-    print(type(texte.words))"""
-    #tokenisation
-    tokens=nltk.word_tokenize(texte)
+    # tokenisation
+    tokens = nltk.word_tokenize(texte)
     print(tokens)
-    #stopwords
+    # stopwords
     stop_words = set(stopwords.words('english'))
     tokens = [word for word in tokens if word not in stop_words]
     print(tokens)
-    #Stemmer & Lemmatization
-    #porter = PorterStemmer()
+    # Stemmer & Lemmatization
     lemmatizer = WordNetLemmatizer()
-    #stemmed_words = [porter.stem(word) for word in tokens]
     lemmatized_words = [lemmatizer.lemmatize(word) for word in tokens]
     print(lemmatized_words)
-    query= " ".join(lemmatized_words) +  "In context of Computer Science"
+    query = " ".join(lemmatized_words) + " should be Tunisian recipe"
     print(query)
-    
-    # utilisation de openai
-    response=QueryOpenAI(query)
-    return {"msg": response}
 
-    
+    # Now you can use the generated query with OpenAI API
+    chat_prompt = [{"role": "user", "content": query}]
+    response = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=chat_prompt, max_tokens=200)
+    print(response)
+
+    if "choices" in response and response["choices"]:
+        return {"reponse": response["choices"][0]["message"]["content"]}
+    else:
+        return {"reponse": "No valid response from OpenAI"}
+
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8001)
+    uvicorn.run(app, host="127.0.0.1", port=5500)
