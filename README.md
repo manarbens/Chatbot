@@ -1,10 +1,10 @@
 Ce dépôt contient deux branches : main et master.
 
 * Branche "main"
-La branche main contient le projet réalisé au cours des sessions PolyGPT en classe.
+La branche main contient le projet réalisé en classe "PolyGPT".
 
 * Branche "master"
-La branche master présente un projet de chatbot culinaire implémenté avec les technologies suivantes :
+La branche master présente le projet de chatbot culinaire implémenté avec les technologies suivantes :
 HTML5
 CSS
 JavaScript (JS)
