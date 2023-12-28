@@ -12,6 +12,10 @@ Flask
 API OpenAI
 API REST
 FastAPI
+
+![o](https://github.com/manarbens/ChatbotPI_ManarBenSalah/assets/59377342/a6b8d92f-757b-4af0-be8f-3d19316eaa7b)
+
+
 # Chatbot cuisine demo :
 
 https://github.com/manarbens/ChatbotPI_ManarBenSalah/assets/59377342/6d53dddf-8226-4c9b-aa6f-9ca2dd742499
