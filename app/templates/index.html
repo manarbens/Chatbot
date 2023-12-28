@@ -120,22 +120,31 @@
             
         </div>
     </div>
-
+   
+   
     <script>
-      
-
         function startSpeechRecognition(event) {
-          // Prevent the default form submission behavior
-          event.preventDefault();
-      
-          var recognition = new webkitSpeechRecognition() || new SpeechRecognition();
-          recognition.onresult = function(event) {
-              var result = event.results[0][0].transcript;
-              document.getElementById('user-message').value = result;
-          };
-          recognition.start();
-      }
-      
+            // Prevent the default form submission behavior
+            event.preventDefault();
+
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                var recognition = new (window.webkitSpeechRecognition || window.SpeechRecognition)();
+                recognition.onresult = function(event) {
+                    var result = event.results[0][0].transcript;
+                    document.getElementById('user-message').value = result;
+                };
+                recognition.start();
+            } else {
+                console.log('Speech recognition not supported in this browser.');
+            }
+        }
+    </script>
+
+    <!-- Add this call to speakResponse in the script section -->
+    <script>
+        {% for response in thread %}
+            speakResponse("{{ response|safe }}");
+        {% endfor %}
     </script>
 </body>
 </html>

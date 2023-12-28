@@ -3,7 +3,6 @@ import nltk
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
-import string
 from model import chat_with_gpt3
 from time import sleep
 
@@ -14,14 +13,8 @@ nltk.download('wordnet')
 
 app = Flask(__name__)
 
-
-
-start = ["Chatbot: Hello, how can I assist you today?"]
-thread=[]
-@app.route('/')
-def home():
-    thread=[]
-    return render_template('index.html',thread = start) 
+# Initialize an empty thread with the initial message
+thread = ["Chatbot: Hello, how can I assist you today?"]
 
 def preprocess_nlp(text):
     # Tokenisation
@@ -40,30 +33,27 @@ def preprocess_nlp(text):
     
     return preprocessed_text
 
-
+# Update your Flask route function
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
     sleep(2)
+    bot_response = None  # Initialize bot_response variable
+
     if request.method == 'POST':
         file1 = request.form['file1']
-        
-        # Affiche le texte d'origine
         print("Texte d'origine:", file1)
-        
-        # Ajout du prétraitement NLP
         preprocessed_text = preprocess_nlp(file1)
-        
-        # Affiche le texte après prétraitement
         print("Texte après prétraitement:", preprocessed_text)
-        
-        thread.append("You (Preprocessed): " + preprocessed_text)
-        
+        user_message = "You (Preprocessed): " + preprocessed_text
+        thread.append(user_message)
         prompt = f"User: {preprocessed_text}\nChatbot:"
         chatbot_response = chat_with_gpt3(prompt)
         thread.append("Chatbot: " + chatbot_response)
 
-    return render_template('index.html', thread=thread)
+        # Set bot_response for use in the template
+        bot_response = chatbot_response
 
+    return render_template('index.html', thread=thread, bot_response=bot_response)
 
 
 if __name__ == "__main__":
