@@ -112,6 +112,9 @@
                 <button class="icon-button" onclick="startSpeechRecognition(event)">
                   <i class="fas fa-microphone"></i>
               </button>
+              <button class="icon-button" onclick="startTextToSpeech(event)">
+                <i class="fas fa-volume-up"></i>
+              </button>
               
                 <i class="fas fa-smile" style="margin-left: 10px; font-size: 20px; color: #A569BD;"></i>
                 <i class="fas fa-camera" style="margin-left: 10px; font-size: 20px; color: #A569BD;"></i>
@@ -120,31 +123,34 @@
             
         </div>
     </div>
+    <audio id="speechOutput" controls style="display: none;"></audio>
    
-   
+    
+    
+      
     <script>
-        function startSpeechRecognition(event) {
-            // Prevent the default form submission behavior
+        function startTextToSpeech(event) {
             event.preventDefault();
-
-            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-                var recognition = new (window.webkitSpeechRecognition || window.SpeechRecognition)();
-                recognition.onresult = function(event) {
-                    var result = event.results[0][0].transcript;
-                    document.getElementById('user-message').value = result;
-                };
-                recognition.start();
-            } else {
-                console.log('Speech recognition not supported in this browser.');
-            }
+    
+            // Get the last bot response from the chat container
+            const chatMessages = document.querySelector('.chat-messages');
+            const botMessages = chatMessages.getElementsByClassName('bot-message');
+            const lastBotResponse = botMessages[botMessages.length - 1].textContent.replace('Chatbot: ', '');
+    
+            // Use Web Speech API for text-to-speech
+            const speechOutput = new SpeechSynthesisUtterance();
+            speechOutput.text = lastBotResponse;
+    
+            // Set language to English
+            speechOutput.lang = 'en-US'; // or 'en'
+    
+            speechSynthesis.speak(speechOutput);
         }
     </script>
-
-    <!-- Add this call to speakResponse in the script section -->
-    <script>
-        {% for response in thread %}
-            speakResponse("{{ response|safe }}");
-        {% endfor %}
-    </script>
+    
+    
+    
+    
+    
 </body>
 </html>
