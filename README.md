@@ -17,7 +17,8 @@ FastAPI
 https://github.com/manarbens/ChatbotPI_ManarBenSalah/assets/59377342/6d53dddf-8226-4c9b-aa6f-9ca2dd742499
 # PolyGPT :
 
-![1](https://github.com/manarbens/ChatbotPI_ManarBenSalah/assets/59377342/d9eb6457-8b46-41c8-b7c1-384fb7199afc)
+![1](https://github.com/manarbens/ChatbotPI_ManarBenSalah/assets/59377342/4a90abd6-cf78-4535-a437-ae737f8d1b8a)
+
 
 
 
