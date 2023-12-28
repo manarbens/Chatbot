@@ -5,6 +5,22 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from model import chat_with_gpt3
 from time import sleep
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
+import uvicorn
+from textblob import TextBlob
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 # Téléchargez les ressources nécessaires pour NLTK
 nltk.download('punkt')
