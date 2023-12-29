@@ -1,46 +1,146 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Chatbot V2</title>
+    <title>PolyGPT Messenger</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
+    <style>
+        /* Add custom style for button icons */
+        .btn i {
+            font-size: 1.5rem; /* Adjust the icon size as needed */
+        }
+
+        body {
+            background-color: #f8f9fa;
+        }
+
+        #response_msg {
+            overflow-y: scroll;
+            padding: 15px;
+            max-height: 100vh; /* Adjusted max-height to fill the entire viewport height */
+            border: 1px solid #ddd;
+            border-radius: 15px;
+        }
+        
+        .message-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .message {
+            padding: 10px;
+            border-radius: 15px;
+            max-width: 70%;
+            word-wrap: break-word;
+            margin-bottom: 5px;
+        }
+
+        .user-message {
+            background-color: #007bff;
+            color: #fff;
+            align-self: flex-end;
+        }
+
+        .bot-message {
+            background-color: #28a745;
+            color: #fff;
+            align-self: flex-start;
+        }
+
+        #textSpeech {
+            border-radius: 0; /* Set border-radius to 0 for a rectangular shape */
+            font-size: 1.25rem;
+            padding: 0.375rem 0.75rem;
+        }
+        
+        .icon-button {
+            margin-left: 10px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: green;
+            color: #fff;
+            transition: background-color 0.3s;
+        }
+
+    </style>
 </head>
-  <body>
+<body>
     <div class="container">
         <div class="row">
             <div class="col text-center">
-                <h1 class="text-danger">PolyGPT</h1>
+                <h1 class="text-danger">PolyGPT Messenger</h1>
             </div>
         </div>
-
     </div>
+
     <div class="container">
         <div class="row">
-            <div id="reponse_msg"class="col border" style="height: 70vh;">
-                
+           <div id="response_msg" class="col-12 border">
+
+                <!-- Sample messages -->
+                <div class="message-container">
+                    <div class="message bot-message">Hello! How can I help you today?</div>
+                </div>
+                <div class="message-container">
+                    <div class="message user-message">Hi there!</div>
+                </div>
             </div>
-            <div class="col-12">
-                <button id="bSpeak" class="btn btn-danger" style="display:none;"><i class="bi bi-megaphone text-white"></i></button>
-            </div>
+            
         </div>
     </div>
     <div class="container fixed-bottom">
         <div class="row" style="margin: 10px;">
             <div class="col-8">
-                <input id="textSpeech" type="text" class="form-control" placeholder="Your query here" >
+                <input id="textSpeech" type="text" class="form-control" placeholder="Ask me anything...">
             </div>
             <div class="col-2">
-                <button id="bText"class="btn btn-danger"><i class="bi bi-send text-white"></i></button>
+                <button id="bText" class="btn btn-danger btn-icon d-flex align-items-center justify-content-center">
+                    <i class="bi bi-chat-text"></i>
+                </button>
             </div>
             <div class="col-2">
-                <button id="bMic" class="btn btn-danger"><i class="bi bi-mic-fill text-white"></i></button>
+                <button id="bMic" class="btn btn-danger btn-icon d-flex align-items-center justify-content-center">
+                    <i class="bi bi-mic-fill"></i>
+                </button>
+            </div>
+            <div class="col-12">
+                <button id="bSpeak" class="btn btn-danger" style="display:none;"><i class="fas fa-volume-up text-white"></i></button>
             </div>
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="./js/app.js"></script>
-  </body>
+
+    <script>
+        function sendMessage(sender) {
+            const messageText = document.getElementById('textSpeech').value;
+            const messageContainer = document.getElementById('response_msg');
+    
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message-container');
+            messageElement.innerHTML = `<div class="message ${sender === 'user' ? 'user-message' : 'bot-message'}">${messageText}</div>`;
+    
+            messageContainer.appendChild(messageElement);
+    
+            // Clear input after sending message
+            document.getElementById('textSpeech').value = '';
+        }
+    
+        // Correct function name here
+        function texteToSpeech() {
+            // Your existing code for text to speech goes here
+        }
+    </script>
+    
+</body>
 </html>
