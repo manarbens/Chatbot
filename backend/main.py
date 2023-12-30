@@ -69,11 +69,11 @@ def analyse_endpoint(analyse_input: AnalyseTexteInput):
 def Query_OpenIA(query:str):
     
 
-    openai.api_key = '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'
+    openai.api_key = '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'#Please add the API key sent via email here
     conversation = "You are a computer science university teacher spcialized in AI, machine learning and deeplearning..explain "+ query
      
     response = openai.Completion.create(
-    engine="gpt-3.5-turbo",  
+    engine="text-davinci-003",  
     prompt=conversation,
     max_tokens=150
     )

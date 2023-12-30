@@ -51,7 +51,10 @@
             background-color: #28a745;
             color: #fff;
             align-self: flex-start;
+            border-radius: 15px;
+            padding: 10px; /* Add padding for spacing within the rectangle */
         }
+        
 
         #textSpeech {
             border-radius: 0; /* Set border-radius to 0 for a rectangular shape */
@@ -70,7 +73,12 @@
             color: #fff;
             transition: background-color 0.3s;
         }
-
+        .green-container {
+            background-color: green;
+            border-radius: 15px;
+            padding: 10px;
+        }
+        
     </style>
 </head>
 <body>
@@ -122,18 +130,28 @@
     <script src="./js/app.js"></script>
 
     <script>
-        function sendMessage(sender) {
-            const messageText = document.getElementById('textSpeech').value;
+        function sendMessage(sender, messageText) {
             const messageContainer = document.getElementById('response_msg');
     
             const messageElement = document.createElement('div');
             messageElement.classList.add('message-container');
-            messageElement.innerHTML = `<div class="message ${sender === 'user' ? 'user-message' : 'bot-message'}">${messageText}</div>`;
+    
+            // Wrap both user and bot messages in a green container
+            const messageWrapper = document.createElement('div');
+            messageWrapper.classList.add('message', sender === 'user' ? 'user-message' : 'bot-message');
+            messageWrapper.textContent = messageText;
+    
+            // Apply green background only to bot's messages
+            if (sender === 'bot') {
+                const greenContainer = document.createElement('div');
+                greenContainer.classList.add('green-container');
+                greenContainer.appendChild(messageWrapper);
+                messageElement.appendChild(greenContainer);
+            } else {
+                messageElement.appendChild(messageWrapper);
+            }
     
             messageContainer.appendChild(messageElement);
-    
-            // Clear input after sending message
-            document.getElementById('textSpeech').value = '';
         }
     
         // Correct function name here
@@ -141,6 +159,7 @@
             // Your existing code for text to speech goes here
         }
     </script>
+    
     
 </body>
 </html>
